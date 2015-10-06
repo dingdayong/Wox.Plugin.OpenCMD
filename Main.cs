@@ -14,6 +14,10 @@ namespace Wox.Plugin.OpenCMD
     public class Main : IPlugin
     {
         private PluginInitContext context;
+
+        /// <summary>
+        /// file explorer window.
+        /// </summary>
         private static List<SystemWindow> openingWindows = new List<SystemWindow>();
 
         static Main()
@@ -31,9 +35,13 @@ namespace Wox.Plugin.OpenCMD
             GetOpeningWindows();
             if (openingWindows.Count > 0)
             {
-                if (openingWindows[0].Process.ProcessName == "explorer")
+                foreach (SystemWindow window in openingWindows)
                 {
-                    win = openingWindows[0];
+                    if (IsValidateProcess(window.Process.ProcessName))
+                    {
+                        win = window;
+                        break;
+                    }
                 }
             }
 
@@ -100,16 +108,22 @@ namespace Wox.Plugin.OpenCMD
             this.context = context;
         }
 
+        /// <summary>
+        /// 启动Shell.
+        /// </summary>
+        /// <param name="path">路径.</param>
         private static void StartShell(string path)
         {
             path = HttpUtility.UrlDecode(path);
-            var cmder = Environment.GetEnvironmentVariable("CMDER_ROOT");
+            var cmder = UserSettingStorage.Instance.Cmder;
+            var cmderArgs = UserSettingStorage.Instance.CmderArgs;
             if (!string.IsNullOrEmpty(cmder))
             {
                 Process.Start(new ProcessStartInfo()
                 {
-                    FileName = Path.Combine(cmder, "cmder.exe"),
-                    Arguments = "/START \"" + path + "\""
+                    FileName = cmder,
+                    WorkingDirectory = path,
+                    Arguments = String.Format(cmderArgs,path)
                 });
             }
             else
@@ -122,6 +136,9 @@ namespace Wox.Plugin.OpenCMD
             }
         }
 
+        /// <summary>
+        /// 获得正在打开着的窗口.获得的窗口对象列表放在openingWindows中.
+        /// </summary>
         private static void GetOpeningWindows()
         {
             openingWindows = new List<SystemWindow>();
@@ -145,9 +162,18 @@ namespace Wox.Plugin.OpenCMD
             if (title.Length != 0 || (title.Length == 0 & hWnd != WinApi.statusbar))
             {
                 var window = new SystemWindow(hWnd);
-                if (window.IsAltTabWindow() && !window.IsTopmostWindow())
+
+                // IsTopmostWindow为的是去掉start窗口
+                if (!window.IsTopmostWindow())
                 {
-                    openingWindows.Add(window);
+                    if (IsValidateProcess(window.Process.ProcessName))
+                    {
+                        openingWindows.Add(window);
+                    }
+                    else if (window.IsAltTabWindow())
+                    {
+                        openingWindows.Add(window);
+                    }
                 }
             }
 
@@ -170,5 +196,21 @@ namespace Wox.Plugin.OpenCMD
         }
 
 
+        private static bool IsValidateProcess(string processName)
+        {
+            List<string> explorers = UserSettingStorage.Instance.Explorers;
+            if (explorers != null && explorers.Count > 0)
+            {
+                foreach (string explorer in explorers)
+                {
+                    if (String.Compare(processName, explorer, true) == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

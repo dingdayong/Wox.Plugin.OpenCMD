@@ -1,0 +1,13 @@
+// 
+// Wox.Plugin.OpenCMD setting file like sublime text.This is default setting file.
+// If you want to change this,please create a new file with Wox.Plugin.OpenCMD.user-settings
+// in the same directory. DOT'T modify this file.
+//
+// Place your settings in the file "Wox.Plugin.OpenCMD.user-settings", which
+// overrides the settings in here.
+//
+{
+	"Explorers" : {"explorer","clover"},
+	"Cmder" : ""
+	"CmderArgs" : ""
+}

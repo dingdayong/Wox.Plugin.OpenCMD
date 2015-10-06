@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C1AB915B-D532-40E0-A9FB-5A00EDF8482C}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -12,13 +13,12 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <OldToolsVersion>4.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Wox\Output\Debug\Plugins\Wox.Plugin.OpenCMD-a094df4c-677b-4375-aaa9-0c69099c1933\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,12 +33,6 @@
     <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.7.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>packages\NLog.4.1.2\lib\net35\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -47,8 +41,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Wox.Plugin">
-      <HintPath>packages\Wox.Plugin.1.2.0.446\lib\net35\Wox.Plugin.dll</HintPath>
+    <Reference Include="Wox.Plugin, Version=1.2.0.445, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Wox.Plugin.1.2.0.445\lib\net35\Wox.Plugin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -60,20 +55,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Storage\BaseStorage.cs" />
-    <Compile Include="Storage\BinaryStorage.cs" />
-    <Compile Include="Storage\IStorage.cs" />
-    <Compile Include="Storage\JsonStorage.cs" />
     <Compile Include="SystemWindow.cs" />
-    <Compile Include="UserSettingStorage.cs" />
     <Compile Include="winapi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="plugin.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Wox.Plugin.OpenCMD.wox-settings">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
